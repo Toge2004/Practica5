@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Mis Tareas</h1>
+<ul>
+    {% for task in tasks %}
+        {% if task.user == request.user %}
+            <li>
+                {% if task.important %}
+                    <strong>{{ task.title }}</strong>
+                {% else %}
+                   <h1>
+                    {{ task.title }}
+                   </h1> 
+                {% endif %} 
+
+                <p>{{ task.description }}</p>
+                <p>Usuario: {{ task.user.username }}</p>
+
+                {% if task.datecompleted %}
+                    <p style="color:green;"> Completada el {{ task.datecompleted|date:"d/m/Y H:i" }}</p>
+                {% else %}
+                    <p style="color:rgb(255, 8, 0);"> Pendiente</p>
+                {% endif %}
+
+                <a href="{% url 'task_edit' task.id %}">Editar</a>
+                <a href="{% url 'task_delete' task.id %}">Borrar</a>
+
+            </li>
+        {% endif %}
+    {% empty %}
+        <p>No hay tareas.</p>
+    {% endfor %}
+</ul>
+{% endblock %}
